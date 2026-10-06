@@ -25,6 +25,14 @@ public class Game {
 		this.note = note;
 		this.status = status;
 	}
+	
+	public Game(Long id,String name, List<Gender> genders,String note,Status status) {
+		this.id = id;
+		this.name = name;
+		this.genders = genders;
+		this.note = note;
+		this.status = status;
+	}
 
 	public String getName() {
 		return name;
