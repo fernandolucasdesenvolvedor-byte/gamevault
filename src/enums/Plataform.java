@@ -1,0 +1,13 @@
+package enums;
+
+public enum Plataform {
+	
+	NINTENDO,
+	SUPER_NINTENDO,
+	MEGA_DRIVE,
+	NINTENDO_64,
+	PLAYSTATION,
+	PLAYSTATION_2,
+	PC
+
+}
