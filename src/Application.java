@@ -14,6 +14,11 @@ public class Application {
 		for (Game g: games) {
 			System.out.println(g);
 		}
+		
+		System.out.println("--------------------------");
+		
+		Game gameForId = dao.findById(1L);
+		System.out.println(gameForId);
 
 	}
 
