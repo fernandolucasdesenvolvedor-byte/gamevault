@@ -285,8 +285,151 @@ public class GameDAOJDBC implements GameDAO {
 	}
 
 	@Override
-	public void update(Game game) {
-		// TODO Auto-generated method stub
+	public void update(Long id, Game game) {
+
+		Connection conn = DB.getConnection();
+		
+		try {
+			
+			PreparedStatement ps = conn.prepareStatement("UPDATE games SET name = ?, note = ?, status = ? WHERE id = ?");
+			ps.setString(1, game.getName());
+			ps.setString(2, game.getNote());
+			ps.setString(3, game.getStatus().toString());
+			ps.setLong(4, id);
+			ps.executeUpdate();
+			
+			///////
+			
+			PreparedStatement psGender = conn.prepareStatement("SELECT * FROM genders");
+			PreparedStatement psPlataform = conn.prepareStatement("SELECT * FROM plataforms");
+			ResultSet rsGender = psGender.executeQuery();
+			ResultSet rsPlataform = psPlataform.executeQuery();
+			List<Gender> gendersAll = new ArrayList<>();
+			List<Plataform> plataformsAll = new ArrayList<>();
+			
+			while(rsGender.next()) {
+				gendersAll.add(Gender.valueOf(rsGender.getString("name")));
+			}
+			
+			while(rsPlataform.next()) {
+				plataformsAll.add(Plataform.valueOf(rsPlataform.getString("name")));
+			}
+			
+			/////////
+			
+			List<Gender> gendersNotList = game.getGenders().stream().filter(g -> !gendersAll.contains(g)).toList();
+			List<Plataform> plataformsNotList = game.getPlataforms().stream().filter(p -> !plataformsAll.contains(p)).toList();
+			
+			gendersNotList.forEach(g -> {
+				try {
+					PreparedStatement psGenderAdd = conn.prepareStatement("INSERT INTO genders (name) VALUES (?)");
+					psGenderAdd.setString(1, g.toString());
+					psGenderAdd.executeUpdate();
+				}catch(SQLException e) {
+					throw new DbException(e.getMessage());
+				}
+			});
+			
+			plataformsNotList.forEach(p -> {
+				try {
+					PreparedStatement psPlataformAdd = conn.prepareStatement("INSERT INTO plataforms (name) VALUES (?)");
+					psPlataformAdd.setString(1, p.toString());
+					psPlataformAdd.executeUpdate();
+				}catch(SQLException e) {
+					throw new DbException(e.getMessage());
+				}
+			});
+			
+			psGender = conn.prepareStatement("SELECT * FROM genders");
+			psPlataform = conn.prepareStatement("SELECT * FROM plataforms");
+			rsGender = psGender.executeQuery();
+			rsPlataform = psPlataform.executeQuery();
+			gendersAll.clear();
+			plataformsAll.clear();
+			
+			while(rsGender.next()) {
+				gendersAll.add(Gender.valueOf(rsGender.getString("name")));
+			}
+			
+			while(rsPlataform.next()) {
+				plataformsAll.add(Plataform.valueOf(rsPlataform.getString("name")));
+			}
+			
+			//////////
+
+			List<Integer> idGenders = new ArrayList<>();
+			List<Integer> idPlataforms = new ArrayList<>();
+			
+			game.getGenders().forEach(g -> {
+				try {
+					
+					PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM genders WHERE name = ?");
+					ps1.setString(1, g.name());
+					ResultSet rs = ps1.executeQuery();
+					
+					while(rs.next()) {
+						idGenders.add(rs.getInt("id"));
+					}
+					
+				}catch(SQLException e) {
+					throw new DbException(e.getMessage());
+				}
+			});
+			
+			game.getPlataforms().forEach(p -> {
+				try {
+					
+					PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM plataforms WHERE name = ?");
+					ps1.setString(1, p.name());
+					ResultSet rs = ps1.executeQuery();
+					
+					while(rs.next()) {
+						idPlataforms.add(rs.getInt("id"));
+					}
+					
+				}catch(SQLException e) {
+					throw new DbException(e.getMessage());
+				}
+			});
+			
+			///
+			
+			PreparedStatement ps1 = conn.prepareStatement("DELETE FROM game_gender WHERE game_id = ?");
+			ps1.setLong(1,id);
+			PreparedStatement ps2 = conn.prepareStatement("DELETE FROM game_plataform WHERE game_id = ?");
+			ps2.setLong(1,id);
+			ps1.execute();
+			ps2.execute();
+			
+			idGenders.forEach(i -> {
+				try {
+					PreparedStatement ps4 = conn.prepareStatement("INSERT INTO game_gender (game_id,gender_id) VALUES (?,?)");
+					ps4.setLong(1, id);
+					ps4.setInt(2, i);
+					ps4.execute();
+					
+				}catch(SQLException e) {
+					e.printStackTrace();
+					throw new DbException(e.getMessage());
+				}
+			});
+			
+			idPlataforms.forEach(i -> {
+				try {
+					PreparedStatement ps4 = conn.prepareStatement("INSERT INTO game_plataform (game_id,plataform_id) VALUES (?,?)");
+					ps4.setLong(1, id);
+					ps4.setInt(2, i);
+					ps4.execute();
+					
+				}catch(SQLException e) {
+					e.printStackTrace();
+					throw new DbException(e.getMessage());
+				}
+			});
+			
+		}catch(SQLException e){
+			throw new DbException(e.getMessage());
+		}
 
 	}
 

@@ -11,6 +11,7 @@ public enum Gender {
 	SIMULATION,
 	SPORTS,
 	TERROR,
-	ROYALE
+	ROYALE,
+	RACING
 
 }

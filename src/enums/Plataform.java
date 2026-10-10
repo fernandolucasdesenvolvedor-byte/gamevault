@@ -9,6 +9,7 @@ public enum Plataform {
 	PLAYSTATION,
 	PLAYSTATION_2,
 	PC,
-	PLAYSTATION_3
+	PLAYSTATION_3,
+	SEGA_SATURN
 
 }

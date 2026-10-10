@@ -12,7 +12,7 @@ public interface GameDAO {
 	
 	public void insert(Game game);
 	
-	public void update(Game game);
+	public void update(Long id, Game game);
 	
 	public void delete(Long id);
 }

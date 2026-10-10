@@ -13,11 +13,15 @@ public class Application {
 
 		GameDAO dao = new GameDAOJDBC();
 		
-		
+		/*
 		Game newGame = new Game(null, "Toy Story 2", List.of(Gender.ROYALE), List.of(Plataform.PLAYSTATION_3), "Muito bom jogo", Status.JOGANDO);
 		
 		dao.insert(newGame);
+		*/
 		
+		Game newGame2 = new Game(null, "Toy Story Racer", List.of(Gender.ADVENTURE,Gender.RACING), List.of(Plataform.PLAYSTATION, Plataform.SEGA_SATURN), "Muito bom jogo", Status.JOGANDO);
+		
+		dao.update(1L,newGame2);
 		
 		System.out.println("--------------------------");
 		
