@@ -8,6 +8,7 @@ public enum Plataform {
 	NINTENDO_64,
 	PLAYSTATION,
 	PLAYSTATION_2,
-	PC
+	PC,
+	PLAYSTATION_3
 
 }

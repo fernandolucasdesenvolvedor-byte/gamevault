@@ -10,7 +10,7 @@ public interface GameDAO {
 	
 	public Game findById(Long id);
 	
-	public void insert();
+	public void insert(Game game);
 	
 	public void update(Game game);
 	

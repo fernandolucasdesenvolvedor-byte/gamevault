@@ -10,6 +10,7 @@ public enum Gender {
 	SHOOTER,
 	SIMULATION,
 	SPORTS,
-	TERROR
+	TERROR,
+	ROYALE
 
 }
