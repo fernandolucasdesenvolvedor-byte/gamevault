@@ -3,9 +3,6 @@ import java.util.List;
 import DAO.GameDAO;
 import DAO.GameDAOJDBC;
 import entities.Game;
-import enums.Gender;
-import enums.Plataform;
-import enums.Status;
 
 public class Application {
 
@@ -19,9 +16,12 @@ public class Application {
 		dao.insert(newGame);
 		*/
 		
-		Game newGame2 = new Game(null, "Toy Story Racer", List.of(Gender.ADVENTURE,Gender.RACING), List.of(Plataform.PLAYSTATION, Plataform.SEGA_SATURN), "Muito bom jogo", Status.JOGANDO);
+		/*Game newGame2 = new Game(null, "Toy Story Racer", List.of(Gender.ADVENTURE,Gender.RACING), List.of(Plataform.PLAYSTATION, Plataform.SEGA_SATURN), "Muito bom jogo", Status.JOGANDO);
 		
 		dao.update(1L,newGame2);
+		*/
+		
+		dao.delete(20L);
 		
 		System.out.println("--------------------------");
 		

@@ -435,7 +435,24 @@ public class GameDAOJDBC implements GameDAO {
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
+
+		Connection conn = DB.getConnection();
+		
+		try {
+			
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM game_gender WHERE game_id = ?");
+			ps.setLong(1,id);
+			ps.execute();
+			ps = conn.prepareStatement("DELETE FROM game_plataform WHERE game_id = ?");
+			ps.setLong(1,id);
+			ps.execute();
+			ps = conn.prepareStatement("DELETE FROM games WHERE id = ?");
+			ps.setLong(1,id);
+			ps.execute();
+			
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
 
 	}
 
